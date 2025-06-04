@@ -1,0 +1,113 @@
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 px-4">
+  <div class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Crear cuenta</h2>
+
+    <form [formGroup]="registerForm" autocomplete="off">
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2" for="username">
+          Nombre de usuario
+        </label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Tu nombre de usuario"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        @if (registerForm.controls.username.touched && registerForm.controls.username.errors?.['required']) {
+          <p class="mt-1 text-sm text-red-600 font-medium transition-opacity duration-200 ease-in">
+            El campo es requerido
+          </p>
+        } @else if (registerForm.controls.username.touched && registerForm.controls.username.errors?.['pattern']) {
+          <p class="mt-1 text-sm text-red-600 font-medium transition-opacity duration-200 ease-in">
+            El campo no cumple con los requisitos
+          </p>
+        } @else if (registerForm.controls.username.touched && registerForm.controls.username.errors?.['maxlength']) {
+          <p class="mt-1 text-sm text-red-600 font-medium transition-opacity duration-200 ease-in">
+            El campo solo admite 20 caracteres
+          </p>
+        }
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2" for="email">
+          Correo electrónico
+        </label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="tucorreo@ejemplo.com"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        @if (registerForm.controls.email.touched && registerForm.controls.email.errors?.['required']) {
+          <p class="mt-1 text-sm text-red-600 font-medium transition-opacity duration-200 ease-in">
+            El campo es requerido
+          </p>
+        } @else if (registerForm.controls.email.touched && registerForm.controls.email.errors?.['pattern']) {
+          <p class="mt-1 text-sm text-red-600 font-medium transition-opacity duration-200 ease-in">
+            El campo no cumple con los requisitos de un correo electrónico
+          </p>
+        }
+      </div>
+
+      <div class="mb-6 relative">
+        <label class="block text-gray-700 font-medium mb-2" for="password">
+          Contraseña
+        </label>
+
+        <input
+          id="password"
+          placeholder="Tu contraseña"
+          formControlName="password"
+          type="password"
+          class="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          #password
+        />
+
+        <!-- Botón para mostrar/ocultar -->
+        <button
+          type="button"
+          (click)="togglePassword('password')"
+          class="absolute top-9 right-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          @if (password.type === 'password') {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a10.05 10.05 0 012.107-3.592M6.223 6.223a10.004 10.004 0 0114.142 14.142M3 3l18 18"/>
+            </svg>
+          }
+        </button>
+
+        <!-- Mensajes de error -->
+        @if (registerForm.controls.password.touched && registerForm.controls.password.errors?.['required']) {
+          <p class="mt-1 text-sm text-red-600 font-medium transition-opacity duration-200 ease-in">
+            El campo es requerido
+          </p>
+        } @else if (registerForm.controls.password.touched && registerForm.controls.password.errors?.['pattern']) {
+          <p class="mt-1 text-sm text-red-600 font-medium transition-opacity duration-200 ease-in">
+            El campo no cumple con los requisitos
+          </p>
+        }
+      </div>
+
+      <button
+        type="submit"
+        (click)="validateForm()"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+      >
+        Registrarse
+      </button>
+
+      <p class="text-center text-gray-500 text-sm mt-4">
+        ¿Ya tienes una cuenta?
+        <a [routerLink]="'/auth/login'" class="text-indigo-600 hover:underline">Inicia sesión</a>
+      </p>
+    </form>
+  </div>
+</div>
