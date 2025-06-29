@@ -1,0 +1,28 @@
+<div class="relative">
+  <button
+    class="rounded-xl p-2 hover:cursor-pointer hover:scale-125 transition-all duration-300"
+    (click)="toggleMenu()"
+  >
+    <img 
+      src="assets/svg/dots.svg" 
+      alt="edit"
+      class="w-6 h-6"
+    >
+  </button>
+  @if (menuOpen) {
+    <div class="absolute top-12 right-3 bg-white text-gray-800 rounded-lg shadow-lg border border-gray-200 z-10 w-40 overflow-hidden">
+    <ul class="flex flex-col divide-y divide-gray-400">
+        @for (item of eventList; track $index) {
+          <li>
+            <button
+              (click)="item.labor(); toggleMenu()"
+              class="w-full px-4 py-2 text-left hover:bg-gray-300 transition-all duration-300"
+            >
+              {{ item.label }}
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

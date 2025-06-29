@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { RegisterAccount } from '../interfaces/register.interface';
 import { environment } from '../../../environments/environments';
 import { SuccessResponse } from '../../shared/interfaces/success-response.interface';
-import { Token } from '../interfaces/token.interface';
+import { Token } from '../../shared/interfaces/token.interface';
 
 @Injectable({
   providedIn: 'root'

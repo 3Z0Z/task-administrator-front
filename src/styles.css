@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/30 backdrop-blur-md rounded-2xl border-2 border-white/50;
+  }
+  .input-glass {
+    @apply w-full px-4 py-2 glass-effect rounded-lg outline-none focus:ring-2 focus:ring-white transition-all duration-300 placeholder:text-stone-600;
+  }
+  .white-button {
+    @apply w-full bg-white hover:bg-gray-300 text-gray-900 hover:text-slate-700 font-semibold py-2 px-4 rounded-lg transition duration-300;
+  }
+}

@@ -1,0 +1,68 @@
+<div class="w-full h-full">
+  @if (isLoading) {
+    <div class="flex justify-center items-center h-full">
+      <img 
+        src="assets/svg/loader.svg" 
+        alt="loader"
+        class="w-16 h-16"
+      />
+    </div>
+  } @else {
+    @if (projects.empty) {
+      <div class="flex flex-col gap-5 justify-center items-center h-full">
+        <p class="text-white text-lg">Aun no has creado ningun proyecto</p>
+        <button
+          (click)="createProject()"
+          class="bg-slate-200 hover:bg-slate-400 text-black text-lg font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
+        >
+          Crea tu primer proyecto
+        </button>
+      </div>
+    } @else {
+      <div class="h-full grid grid-rows-[1fr_auto]">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 grid-rows-3 mt-5">
+          @for (project of projects.content; track $index) {
+            <app-project-card 
+              [project]="project"
+            />
+          }
+        </div>
+        @if (projects.totalPages > 1) {
+          <div class="flex justify-center items-center gap-10 mt-5">
+            @if (!projects.first) {
+              <button
+                class="rounded-full h-10 w-10 flex justify-center items-center overflow-hidden hover:scale-150 transition-all duration-300 hover:cursor-pointer"
+                (click)="loadProjects(-1)"
+              >
+                <img
+                  src="assets/svg/previous.svg"
+                  alt="previous"
+                />
+              </button>
+            }
+            @if (!projects.last) {
+              <button
+                class="rounded-full h-10 w-10 flex justify-center items-center overflow-hidden hover:scale-150 transition-all duration-300 hover:cursor-pointer"
+                (click)="loadProjects(+1)"
+              >
+                <img
+                  src="assets/svg/next.svg"
+                  alt="next"
+                />
+              </button>
+            }
+          </div>
+        }
+      </div>
+      <button
+        class="fixed bottom-[70px] right-16 z-50 w-20 h-20 hover:scale-[1.12] transition-all duration-300 rounded-full overflow-clip"
+        (click)="createProject()"
+      >
+        <img 
+          src="assets/svg/add.svg" 
+          alt="add"
+        >
+      </button>
+    }
+  }
+</div>

@@ -1,0 +1,29 @@
+<div class="glass-effect backdrop-blur-none flex justify-between items-center shadow-xl shadow-gray-600/30 p-5 w-full">
+  <input 
+    class="w-5 h-5 hover:cursor-pointer accent-gray-800" 
+    type="checkbox"
+    [checked]="task.is_completed"
+    (change)="onCheckboxChange()"
+  />
+  <h5 
+    class="text-lg font-semibold text-gray-900 w-[20%]"
+    [ngClass]="{
+      'text-gray-900': !task.is_completed,
+      'text-gray-500 line-through italic': task.is_completed 
+    }"
+  >
+    {{ task.task_name }}
+  </h5>
+  <p 
+    class="text-base text-gray-800 w-[60%]"
+    [ngClass]="{
+      'text-gray-800': !task.is_completed,
+      'text-gray-500 line-through italic': task.is_completed
+    }"
+  >
+    {{ task.task_description }}
+  </p>
+  <div class="w-[5%]">
+    <app-hamburguer-menu [eventList]="hamburguerItems" />
+  </div>
+</div>

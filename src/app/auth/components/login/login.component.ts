@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { AuthService } from '../../services/auth-service.service';
+
 import Encryption from '../../../shared/security/Encryption';
-import { Token } from '../../interfaces/token.interface';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Token } from '../../../shared/interfaces/token.interface';
+import { SwalService } from '../../../shared/services/swal.service';
+import { SessionVariables } from '../../../helpers/session-variables';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     RouterModule,
     ReactiveFormsModule
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './login.component.html'
 })
 export default class LoginComponent {
 
@@ -24,10 +26,11 @@ export default class LoginComponent {
   private readonly _fb = inject(FormBuilder);
   private readonly _authService = inject(AuthService);
   private readonly _router = inject(Router);
+  private readonly _swalService = inject(SwalService);
 
   public loginForm = this._fb.group({
-    username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{2,20}$')]],
-    password: ['', [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[-_*?!@/().#])[A-Za-z\\d-_.*?!@/().#]{10,20}$')]],
+    username: ['', [Validators.required]],
+    password: ['', [Validators.required]],
   });
 
   public validateForm(): void {
@@ -39,11 +42,13 @@ export default class LoginComponent {
     const encryptedPassword = Encryption.encryptPassword(password!);
     this._authService.getLogin(username!, encryptedPassword).subscribe({
       next: (res:Token) => {
-        localStorage.setItem('session_token', res.access_token);
+        sessionStorage.setItem(SessionVariables.session_token, res.access_token);
+        sessionStorage.setItem(SessionVariables.session_expiration, (new Date().getTime() + 15 * 60 * 1000).toString());
         this._router.navigate(['/home']);
+        this._swalService.showSuccessToast('Inicio de sesión exitoso');
       },
-      error: (error:HttpErrorResponse) => {
-        console.error('Error during login:', error);
+      error: () => {
+        this._swalService.showErrorToast('Credenciales incorrectas, por favor, intenta nuevamente.');
       }
     });
   }

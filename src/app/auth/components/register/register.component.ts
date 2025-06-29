@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { AuthService } from '../../services/auth-service.service';
 import { RegisterAccount } from '../../interfaces/register.interface';
-import { HttpErrorResponse } from '@angular/common/http';
+import { SwalService } from '../../../shared/services/swal.service';
+
 import Encryption from '../../../shared/security/Encryption';
-import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,8 +18,7 @@ import { Router, RouterModule } from '@angular/router';
     ReactiveFormsModule,
     RouterModule
   ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  templateUrl: './register.component.html'
 })
 export default class RegisterComponent {
 
@@ -24,6 +26,7 @@ export default class RegisterComponent {
   private readonly _fb = inject(FormBuilder);
   private readonly _router = inject(Router);
   private readonly _authService = inject(AuthService);
+  private readonly _swalService = inject(SwalService);
 
   public registerForm = this._fb.group({
     username: ['', [Validators.required, Validators.pattern('^[a-zA-Z*\\d]{2,20}$')]],
@@ -43,8 +46,10 @@ export default class RegisterComponent {
     this._authService.registerUser(request).subscribe({
       next: () => {
         this._router.navigate(['/auth/login']);
+        this._swalService.showSuccessPopup('Registro exitoso', 'Tu cuenta ha sido creada correctamente. Ahora puedes iniciar sesión.');
       },
       error: (error: HttpErrorResponse) => {
+        this._swalService.showErrorPopup(error.error?.message);
       }
     });
   }
